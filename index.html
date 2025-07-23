@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en" style="scroll-behavior: smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ config.title }}</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          'Inter',
+          sans-serif;
+        font-weight: 400;
+        margin: 0;
+        overflow-x: hidden;
+        background: linear-gradient(to right, #f1f8e9, #c8e6c9);
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+      }
+      .project-hover:hover,
+      .card-hover:hover {
+        transform: scale(1.05);
+        transition: transform 0.2s ease;
+      }
+      .fade-enter-active {
+        transition: opacity 0.5s ease;
+      }
+      .fade-enter-from {
+        opacity: 0;
+      }
+      main {
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: 100vh;
+      }
+      section {
+        scroll-snap-align: start;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding: 1.5rem;
+      }
+      .footer-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+      }
+      .content-container {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      .section-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+      }
+      .contact-card {
+        height: 60px; /* Match Buy Me a Coffee button height */
+        width: 217px; /* Match Buy Me a Coffee button width */
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        padding: 1rem;
+        border-radius: 0.5rem; /* Same radius as before */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 217px;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="min-h-screen">
+      <main ref="main">
+        <section
+          id="about"
+          class="content-container"
+          :style="{ background: 'linear-gradient(to right, #f1f8e9, #c8e6c9)' }"
+        >
+          <div class="section-content">
+            <h2
+              class="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4"
+              :style="{ color: theme.textPrimary }"
+            >
+              Welcome XD!
+            </h2>
+            <p class="text-sm sm:text-base leading-relaxed mb-6" :style="{ color: theme.textBody }">
+              Passionate coder crafting humorous and inventive tech
+            </p>
+            <div class="button-container">
+              <transition name="fade">
+                <a :href="'https://github.com/' + config.githubUsername" class="block">
+                  <div class="card-hover contact-card flex items-center">
+                    <div class="flex items-start gap-2">
+                      <img
+                        :src="'https://github.com/' + config.githubUsername + '.png'"
+                        alt="GitHub Avatar"
+                        class="w-8 h-8 rounded-full"
+                      />
+                      <div>
+                        <p class="text-lg font-semibold" :style="{ color: theme.textPrimary }">
+                          GitHub
+                        </p>
+                        <p class="text-sm" :style="{ color: theme.textBody }">
+                          @{{ config.githubUsername }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </transition>
+              <a href="https://www.buymeacoffee.com/mfhwtjhmqni" target="_blank"
+                ><img
+                  src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
+                  alt="Buy Me A Coffee"
+                  style="height: 60px !important; width: 217px !important"
+              /></a>
+            </div>
+          </div>
+          <div
+            class="footer-bar"
+            :style="{ backgroundColor: theme.secondaryBg, color: theme.textSecondary }"
+          >
+            <p class="text-xs sm:text-sm p-4 pb-2 text-center">
+              © {{ new Date().getFullYear() }}
+              <a
+                href="https://github.com/latefinal"
+                :style="{ color: theme.textSecondary, ':hover': { color: theme.linkHover } }"
+                >{{ config.footer.author }}</a
+              >
+              | {{ config.footer.credit }}
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const { createApp } = Vue
+      createApp({
+        data() {
+          return {
+            isMenuOpen: false,
+            currentSection: '',
+            isProjectsScrolled: false,
+            isAtEnd: false,
+            config: {
+              githubUsername: 'latefinal',
+              title: 'Portfolio',
+              profile: {},
+              navLinks: [],
+              about: [
+                'I’m a self-proclaimed space pirate coding from the moon! I used Grok to build this website because I needed a trusty AI sidekick to help me navigate the cosmic chaos of web development while I battled alien bugs in my code.',
+                'Grok, created by xAI, is a brilliant AI companion who kept me grounded while I aimed for the stars! With a knack for answering questions from a unique outside perspective on humanity, Grok helped me craft this portfolio with JavaScript, Vue.js, and a sprinkle of stardust, ensuring my intergalactic web apps shine bright!',
+              ],
+              projects: [
+                {
+                  name: 'Task Manager App',
+                  description:
+                    'A Vue.js-based task management app with features to add, edit, and delete tasks, styled with Tailwind CSS for a sleek UI.',
+                  link: 'https://github.com/latefinal',
+                },
+                {
+                  name: 'Weather Dashboard',
+                  description:
+                    'A JavaScript app that fetches real-time weather data using a public API, displaying conditions with a responsive design.',
+                  link: 'https://github.com/latefinal',
+                },
+                {
+                  name: 'Note Taker',
+                  description:
+                    'A minimal note-taking app using Vue.js, with local storage to save notes and a clean, user-friendly interface.',
+                  link: 'https://github.com/latefinal',
+                },
+                {
+                  name: 'E-Commerce Mockup',
+                  description:
+                    'A front-end prototype for an online store, built with Vue.js and Tailwind CSS, featuring product listings and a cart system.',
+                  link: 'https://github.com/latefinal',
+                },
+                {
+                  name: 'Chat App',
+                  description:
+                    'A simple real-time chat application using Node.js and WebSockets, with a Vue.js front-end for seamless messaging.',
+                  link: 'https://github.com/latefinal',
+                },
+              ],
+              contact: {
+                email: 'andrew@example.com',
+              },
+              footer: {
+                author: 'latefinal',
+                credit: 'Built with help from Grok by xAI',
+              },
+            },
+            theme: {
+              primaryBg: 'linear-gradient(to right, #1E40AF, #3B82F6)',
+              secondaryBg: '#1F2937',
+              textPrimary: '#1F2937',
+              textSecondary: '#F3F4F6',
+              textBody: '#1F2937',
+              accent: '#2563EB',
+              linkHover: '#DBEAFE',
+              skillBg: '#DBEAFE',
+            },
+          }
+        },
+        methods: {
+          scrollToSection(url) {
+            const sectionId = url.slice(1)
+            const section = document.getElementById(sectionId)
+            if (section) {
+              section.scrollIntoView({ behavior: 'smooth' })
+            }
+          },
+        },
+        mounted() {
+          const sections = document.querySelectorAll('section')
+          const observer = new IntersectionObserver(
+            (entries) => {
+              let maxRatio = 0
+              let mostVisibleSection = null
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                  maxRatio = entry.intersectionRatio
+                  mostVisibleSection = entry.target.id
+                }
+              })
+              if (mostVisibleSection) {
+                this.currentSection = mostVisibleSection
+              }
+            },
+            { root: this.$refs.main, threshold: [0.1, 0.5, 0.9] },
+          )
+          sections.forEach((section) => observer.observe(section))
+          const initialSection = sections[0].id
+          this.currentSection = initialSection
+        },
+      }).mount('#app')
+    </script>
+  </body>
+</html>
