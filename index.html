@@ -2,7 +2,10 @@
 <html lang="en" style="scroll-behavior: smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <title>{{ config.title }}</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link
@@ -16,14 +19,15 @@
     <style>
       body {
         font-family:
+          'Inter',
           system-ui,
           -apple-system,
-          'Inter',
           sans-serif;
         font-weight: 400;
         margin: 0;
         overflow-x: hidden;
         background: linear-gradient(to right, #f1f8e9, #c8e6c9);
+        height: 100vh;
       }
       h1,
       h2,
@@ -32,7 +36,6 @@
         font-family: 'Poppins', sans-serif;
         font-weight: 700;
       }
-      .project-hover:hover,
       .card-hover:hover {
         transform: scale(1.05);
         transition: transform 0.2s ease;
@@ -44,8 +47,8 @@
         opacity: 0;
       }
       main {
-        scroll-snap-type: y mandatory;
-        overflow-y: scroll;
+        scroll-snap-type: y proximity;
+        overflow-y: auto;
         height: 100vh;
       }
       section {
@@ -54,17 +57,12 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        padding: 1.5rem;
-      }
-      .footer-bar {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
+        padding: 3rem 1.5rem;
+        box-sizing: border-box;
       }
       .content-container {
-        max-width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
         overflow-x: hidden;
       }
       .section-content {
@@ -75,22 +73,59 @@
         align-items: center;
         width: 100%;
         text-align: center;
+        gap: 1.5rem;
       }
       .contact-card {
-        height: 60px; /* Match Buy Me a Coffee button height */
-        width: 217px; /* Match Buy Me a Coffee button width */
+        height: 64px;
+        width: 240px;
         background-color: white;
         border: 1px solid #e5e7eb;
-        padding: 1rem;
-        border-radius: 0.5rem; /* Same radius as before */
+        padding: 1.25rem;
+        border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
       .button-container {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        max-width: 217px;
+        gap: 1.75rem;
+        max-width: 240px;
         align-items: center;
+        width: 100%;
+      }
+      .text-readable {
+        line-height: 1.9;
+        font-size: 1.15rem;
+        color: #1f2937;
+        max-width: 900px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+      }
+      .copyright {
+        color: #000000;
+        font-size: 0.875rem;
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 2rem;
+      }
+      @media (max-width: 640px) {
+        .text-readable {
+          font-size: 1rem;
+          line-height: 1.7;
+        }
+        .section-content {
+          padding: 0 1rem;
+          gap: 1rem;
+        }
+        section {
+          padding: 2rem 1rem;
+          padding-top: env(safe-area-inset-top);
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+        body {
+          background: linear-gradient(to right, #f1f8e9, #c8e6c9);
+        }
       }
     </style>
   </head>
@@ -103,30 +138,32 @@
           :style="{ background: 'linear-gradient(to right, #f1f8e9, #c8e6c9)' }"
         >
           <div class="section-content">
-            <h2
-              class="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4"
-              :style="{ color: theme.textPrimary }"
-            >
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8" :style="{ color: theme.textPrimary }">
               Welcome XD!
             </h2>
-            <p class="text-sm sm:text-base leading-relaxed mb-6" :style="{ color: theme.textBody }">
-              Passionate coder crafting humorous and inventive tech
-            </p>
+            <div class="text-readable mb-10">
+              <p>
+                Hi, I'm a passionate programmer who loves coding in my free time. Currently, I'm
+                working on small, fun games for my wife to enjoy during her downtime. I thrive on
+                the full development process, from ideation to execution, even though my friends are
+                too busy to join me in my creative coding adventures!
+              </p>
+            </div>
             <div class="button-container">
               <transition name="fade">
                 <a :href="'https://github.com/' + config.githubUsername" class="block">
-                  <div class="card-hover contact-card flex items-center">
-                    <div class="flex items-start gap-2">
+                  <div class="card-hover contact-card flex items-center justify-center">
+                    <div class="flex items-center gap-4">
                       <img
                         :src="'https://github.com/' + config.githubUsername + '.png'"
                         alt="GitHub Avatar"
-                        class="w-8 h-8 rounded-full"
+                        class="w-10 h-10 rounded-full"
                       />
                       <div>
-                        <p class="text-lg font-semibold" :style="{ color: theme.textPrimary }">
+                        <p class="text-xl font-semibold" :style="{ color: theme.textPrimary }">
                           GitHub
                         </p>
-                        <p class="text-sm" :style="{ color: theme.textBody }">
+                        <p class="text-base" :style="{ color: theme.textBody }">
                           @{{ config.githubUsername }}
                         </p>
                       </div>
@@ -134,41 +171,28 @@
                   </div>
                 </a>
               </transition>
-              <a href="https://www.buymeacoffee.com/mfhwtjhmqni" target="_blank"
-                ><img
+              <a href="https://www.buymeacoffee.com/mfhwtjhmqni" target="_blank">
+                <img
                   src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
                   alt="Buy Me A Coffee"
-                  style="height: 60px !important; width: 217px !important"
-              /></a>
+                  style="height: 64px !important; width: 240px !important"
+                />
+              </a>
             </div>
           </div>
-          <div
-            class="footer-bar"
-            :style="{ backgroundColor: theme.secondaryBg, color: theme.textSecondary }"
-          >
-            <p class="text-xs sm:text-sm p-4 pb-2 text-center">
-              © {{ new Date().getFullYear() }}
-              <a
-                href="https://github.com/latefinal"
-                :style="{ color: theme.textSecondary, ':hover': { color: theme.linkHover } }"
-                >{{ config.footer.author }}</a
-              >
-              | {{ config.footer.credit }}
-            </p>
-          </div>
+          <p class="copyright">
+            © {{ new Date().getFullYear() }} {{ config.footer.author }} | {{ config.footer.credit
+            }}
+          </p>
         </section>
       </main>
     </div>
-
     <script>
       const { createApp } = Vue
       createApp({
         data() {
           return {
-            isMenuOpen: false,
             currentSection: '',
-            isProjectsScrolled: false,
-            isAtEnd: false,
             config: {
               githubUsername: 'latefinal',
               title: 'Portfolio',
@@ -219,14 +243,8 @@
               },
             },
             theme: {
-              primaryBg: 'linear-gradient(to right, #1E40AF, #3B82F6)',
-              secondaryBg: '#1F2937',
               textPrimary: '#1F2937',
-              textSecondary: '#F3F4F6',
               textBody: '#1F2937',
-              accent: '#2563EB',
-              linkHover: '#DBEAFE',
-              skillBg: '#DBEAFE',
             },
           }
         },
